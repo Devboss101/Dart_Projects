@@ -41,12 +41,12 @@ class ContactManager {
 
   void addContact(Contact contact) {
     _contacts.add(contact);
-    print("${contact.name[0].toUpperCase() + contact.name.substring(1)}'s contact saved successfully");
+    print(
+        "${contact.name[0].toUpperCase() + contact.name.substring(1)}'s contact saved successfully");
   }
 
-
   void displayAllContacts() {
-    if(_contacts.isEmpty {
+    if (_contacts.isEmpty) {
       print("No contacts found");
     } else {
       print("All contacts");
@@ -57,16 +57,19 @@ class ContactManager {
     }
   }
 
-  void deleteContact(String name){
-     _contacts.removeWhere((contact) => contact.name.toLowerCase() == name.toLowerCase());
-     print("Contact deleted successfully");
+  void deleteContact(String name) {
+    _contacts.removeWhere(
+        (contact) => contact.name.toLowerCase() == name.toLowerCase());
+    print("Contact deleted successfully");
   }
 
   void searchContacts(String keyword) {
-    var results = _contacts.where((contact) => 
-        contact.name.toLowerCase().contains(keyword.toLowerCase()) ||
-        contact.phone.contains(keyword) ||
-        contact.email.toLowerCase().contains(keyword.toLowerCase())).toList();
+    var results = _contacts
+        .where((contact) =>
+            contact.name.toLowerCase().contains(keyword.toLowerCase()) ||
+            contact.phone.contains(keyword) ||
+            contact.email.toLowerCase().contains(keyword.toLowerCase()))
+        .toList();
 
     if (results.isEmpty) {
       print("No contacts matched your search");
@@ -95,15 +98,42 @@ class ContactManager {
     if (file.existsSync()) {
       var lines = file.readAsLinesSync();
       _contacts = lines.map((line) => Contact.fromFileFormat(line)).toList();
+      for (var contact in _contacts) {
+        contact.display();
+        print("-----------");
+      }
       print("Contacts loaded from file");
     } else {
       print("No saved file found");
     }
   }
-
 }
 
 void main() {
-  
-}
+  ContactManager manager = ContactManager();
 
+  manager.addContact(Contact(
+      name: "Daniel",
+      phone: "08139925961",
+      email: "dani@gmail.com",
+      address: "Umuisor Ibusa"));
+
+  manager.addContact(
+      Contact(name: "Emmanuel", phone: "08063084341", email: "emma@gmail.com"));
+
+  manager.addContact(
+      Contact(name: "Favour", phone: "08163084361", email: "fav@gmail.com"));
+
+  // manager.displayAllContacts();
+
+  // manager.searchContacts("emma");
+
+  // manager.saveToFile();
+
+  // manager.loadFromFile();
+
+  // manager = ContactManager();
+
+  // manager.loadFromFile();
+  // manager.displayAllContacts();
+}
